@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<MovieHelper>();
+builder.Services.AddTransient<TvShowHelper>();
 
 
 var app = builder.Build();

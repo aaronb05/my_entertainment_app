@@ -40,26 +40,26 @@
 </div>
 <div class="row">
     <h3 class="related-header">Related Projects</h3>
-
-    <div class="row related-movies">
-        @foreach (var movie in Model.RelatedMovies)
-        {
-            <div class="col-md-3 related-single-movie">
-                <div>
-                    <h5>
-                        @movie.Title
-                    </h5>
-                </div>
-                <div>
-                    <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})">
-                        <img class="img-fluid" src="https://image.tmdb.org/t/p/w185/@movie.PosterPath" alt="">
-                    </a>
-                </div>
-            </div>
-        }
-    </div>
-
 </div>
+<div class="row related-movies">
+    @foreach (var movie in Model.RelatedMovies)
+    {
+        <div class="col-md-3 related-single-movie">
+            <div>
+                <h5>
+                    @movie.Title
+                </h5>
+            </div>
+            <div>
+                <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})">
+                    <img class="img-fluid" src="https://image.tmdb.org/t/p/w185/@movie.PosterPath" alt="">
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+
 
 
 

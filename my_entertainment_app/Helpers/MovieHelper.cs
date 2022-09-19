@@ -1,14 +1,22 @@
 ﻿using my_entertainment_app.Models;
+using my_entertainment_app.ViewModels;
 using Newtonsoft.Json.Linq;
 
 namespace my_entertainment_app.Helpers
 {
     public class MovieHelper
     {
-        public async Task<List<MovieNowPlaying>> GetNowPlaying(string apiKey)
+        private readonly IConfiguration config;
+
+        public MovieHelper(IConfiguration config)
+        {
+            this.config = config;
+        } 
+
+        public async Task<List<MovieNowPlaying>> GetNowPlaying()
         {
             List<MovieNowPlaying> movieData = new List<MovieNowPlaying>();
-            //var apiKey = config["apiKey"];
+            var apiKey = config["apiKey"];
 
             HttpClient client = new HttpClient();
             var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/now_playing?api_key={apiKey}&language=en-US&page=1");
@@ -36,25 +44,69 @@ namespace my_entertainment_app.Helpers
                 movieData.Add(newMovie);
             }
 
-            return movieData.ToList();
+            return movieData;
         }
 
-        public async Task<JToken> GetMovieDetails(int movie_id, string apiKey)
+        public async Task<MovieDetails> GetMovieDetails(int movie_id)
         {
+            var apiKey = config["apiKey"];
             HttpClient client = new HttpClient();
             var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/{movie_id}?api_key={apiKey}&language=en-US");
             var apiResponse = await response.Content.ReadAsStringAsync();
-            var data = JObject.Parse(apiResponse);
+            var movie = JObject.Parse(apiResponse);
+            List<Genre> genreList = new List<Genre>();
 
-            Console.Write(data);
+            if (movie != null)
+            {
+                var genres = movie["genres"];
 
-            return data;
+                foreach (var item in genres)
+                {
+                    var newGenre = new Genre()
+                    {
+                        Id = Convert.ToInt32(item["id"]),
+                        Name = item["name"].ToString()
+                    };
+                    genreList.Add(newGenre);
+                }
+
+                var movieDetails = new MovieDetails()
+                {
+                    Id = movie_id,
+                    Adult = Convert.ToBoolean(movie["adult"]),
+                    BackdropPath = movie["backdrop_path"].ToString(),
+                    Budget = Convert.ToInt32(movie["budget"]),
+                    Homepage = movie["homepage"].ToString(),
+                    OriginalLanguage = movie["original_language"].ToString(),
+                    OriginalTitle = movie["original_title"].ToString(),
+                    Overview = movie["overview"].ToString(),
+                    Popularity = (float)Convert.ToDouble(movie["popularity"].ToString()),
+                    PosterPath = movie["poster_path"].ToString(),
+                    ReleaseDate = Convert.ToDateTime(movie["release_date"]),
+                    Revenue = Convert.ToInt32(movie["revenue"]),
+                    Runtime = Convert.ToInt32(movie["runtime"]),
+                    Status = movie["status"].ToString(),
+                    Tagline = movie["tagline"].ToString(),
+                    Title = movie["title"].ToString(),
+                    VoteAverage = (float)Convert.ToDouble(movie["vote_average"].ToString()),
+                    VoteCount = Convert.ToInt32(movie["vote_count"].ToString()),
+                    Genres = genreList
+                };
+
+                return movieDetails;
+            }
+            else
+            {
+                var movieDetails = new MovieDetails();
+
+                return movieDetails;
+            }
 
         }
 
-        public async Task<List<MovieDetails>> GetRelatedMovies(int movie_id, string apiKey)
+        public async Task<List<MovieDetails>> GetRelatedMovies(int movie_id)
         {
-            
+            var apiKey = config["apiKey"];
             HttpClient client = new HttpClient();
             var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/{movie_id}/similar?api_key={apiKey}&language=en-US&page=1");
             var apiResponse = await response.Content.ReadAsStringAsync();
