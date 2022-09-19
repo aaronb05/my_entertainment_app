@@ -1,0 +1,66 @@
+﻿@using my_entertainment_app.ViewModels
+
+@model MovieDetailsVM
+
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+
+<div class="row movies-detail">
+    <div class="col-md-8">
+        <div class="row movie-details-header">
+            <div class="col-md-12">
+                <h1 class="display-1">
+                    @Model.Movie.Title:                    
+                </h1>
+                <h3 class="display-6">@Model.Movie.Tagline</h3>
+            </div>            
+        </div>
+        <div class="row">  
+            <div class="col-md-4">
+                <img class="img-fluid" src="https://image.tmdb.org/t/p/w185/@Model.Movie.PosterPath" alt="">
+            </div>  
+            <div class="col-md-8">                
+                <p> @Model.Movie.Overview</p>
+                <h3 class="my-3">Movie Details</h3>
+                <ul>
+                    <li>Rating: @Model.Movie.VoteAverage</li>
+                    <li>Votes: @Model.Movie.VoteCount</li>
+                    <li>Runtime: @Model.Movie.Runtime min</li>
+                    <li>Genre: @Model.Movie.Genres.FirstOrDefault().Name </li>
+                    <li>Gross Revenue: $@Model.Movie.Revenue</li>
+                    <li>
+                        <a href="@Model.Movie.Homepage"> See More + </a> 
+                    </li>
+                </ul>
+            </div>  
+        </div>      
+    </div>
+</div>
+<div class="row">
+    <h3 class="related-header">Related Projects</h3>
+
+    <div class="row related-movies">
+        @foreach (var movie in Model.RelatedMovies)
+        {
+            <div class="col-md-3 related-single-movie">
+                <div>
+                    <h5>
+                        @movie.Title
+                    </h5>
+                </div>
+                <div>
+                    <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})">
+                        <img class="img-fluid" src="https://image.tmdb.org/t/p/w185/@movie.PosterPath" alt="">
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+
+
+

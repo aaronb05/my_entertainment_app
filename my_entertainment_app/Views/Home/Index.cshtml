@@ -1,0 +1,123 @@
+﻿@using my_entertainment_app.ViewModels
+
+@model DashboardVM
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="main-header">
+    <h1 class="display-4">Now Playing</h1>
+</div>
+<div class="container-fluid">
+    <div class="row now-playing-carousel">
+        <div class="col-lg-8">
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                </div>                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://image.tmdb.org/t/p/w780/@Model.MovieOne.BackdropPath" class="d-block w-100" alt="movie poster" />
+                        <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = Model.MovieOne.Id})">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@Model.MovieOne.Title</h5>
+                                <p>@Model.MovieOne.Overview</p>
+                            </div>
+                        </a>                       
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.tmdb.org/t/p/w780/@Model.MovieTwo.BackdropPath" class="d-block w-100" alt="...">
+                        <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = Model.MovieTwo.Id})">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@Model.MovieTwo.Title</h5>
+                                <p>@Model.MovieTwo.Overview</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.tmdb.org/t/p/w780/@Model.MovieThree.BackdropPath" class="d-block w-100" alt="...">
+                        <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = Model.MovieThree.Id})">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@Model.MovieThree.Title</h5>
+                                <p>@Model.MovieThree.Overview</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.tmdb.org/t/p/w780/@Model.MovieFour.BackdropPath" class="d-block w-100" alt="...">
+                        <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = Model.MovieFour.Id})">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@Model.MovieFour.Title</h5>
+                                <p>@Model.MovieFour.Overview</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://image.tmdb.org/t/p/w780/@Model.MovieFive.BackdropPath" class="d-block w-100" alt="...">
+                        <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = Model.MovieFive.Id})">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@Model.MovieFive.Title</h5>
+                                <p>@Model.MovieFive.Overview</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                          
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>          
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    @foreach(var movie in Model.Movies){
+        <div class="row main-card-container">
+            <div class="col-md-8">
+                <div class="card mb-12">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="https://image.tmdb.org/t/p/w185/@movie.PosterPath" class="img-fluid rounded-start main-card-image" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@movie.Title</h5>
+                                <p class="card-text">@movie.Overview</p>
+                                <p class="card-text">
+                                    <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})"><small class="text-muted">See More +</small></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            @*<div class="col-md-6">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="~/images/main_pool_night.jpeg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">See More +</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    }   
+</div>
