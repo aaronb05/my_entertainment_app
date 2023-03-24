@@ -12,10 +12,10 @@ namespace my_entertainment_app.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IConfiguration config;
+        public readonly ILogger<HomeController> _logger;
+        public readonly IConfiguration config;
         private readonly MovieHelper movieHelper;   
-        private readonly TvShowHelper tvShowHelper;
+        public readonly TvShowHelper tvShowHelper;
 
         public HomeController(ILogger<HomeController> logger, IConfiguration config, MovieHelper movieHelper, TvShowHelper tvShowHelper)
         {
@@ -44,10 +44,20 @@ namespace my_entertainment_app.Controllers
           
         }
 
-        public IActionResult MoviesIndex()
+        public async Task<IActionResult> MoviesIndex()
         {
+            var topRated = await movieHelper.GetTopRated();
+            var upcoming = await movieHelper.GetUpcoming();
+            var popular = await movieHelper.GetPopular();
 
-            return View();
+            MovieIndexVM movieIndexVM = new MovieIndexVM()
+            {
+                TopRated = topRated.Take(12).ToList(),
+                Upcoming = upcoming.Take(12).ToList(),
+                Popular = popular.Take(12).ToList()
+            };
+
+            return View(movieIndexVM);
         }
 
         public async Task<IActionResult> MoviesDetails(int movie_id)

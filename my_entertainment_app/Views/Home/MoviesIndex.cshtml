@@ -1,5 +1,96 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using my_entertainment_app.ViewModels
+
+@model MovieIndexVM
+
 @{
+    ViewData["Title"] = "Movies";
 }
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class=col-sm-12>
+            <div class="d-flex align-items-start">
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link active" id="v-pills-top-rated-tab" data-bs-toggle="pill" data-bs-target="#top-rated" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Top Rated</button>
+                    <button class="nav-link" id="v-pills-popular-tab" data-bs-toggle="pill" data-bs-target="#popular" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Popular</button>
+                    <button class="nav-link" id="v-pills-upcoming-tab" data-bs-toggle="pill" data-bs-target="#upcoming" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Upcoming</button>
+                </div>
+                <div class="tab-content movie-section" id="v-pills-tabContent">                          
+                    <div class="tab-pane fade show active" id="top-rated" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <div class="row">
+                        @foreach (var movie in Model.TopRated)
+                        {
+                            <div class="col-md-4 movie-section">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="https://image.tmdb.org/t/p/w300/@movie.BackdropPath" class="card-img-top" alt="movie-backdrop">
+                                        <div class="card-body movie-card-body">
+                                        <h5 class="card-title">@movie.Title</h5>
+                                        <p class="card-text">@movie.Overview</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@movie.ReleaseDate.ToString("MM/dd/yyyy")</li>
+                                        <li class="list-group-item">Rating: @movie.VoteAverage</li>
+                                        <li class="list-group-item">Votes: @movie.VoteCount</li>
+                                    </ul>
+                                    <div class="card-body text-light">
+                                        <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})" class="card-link">See More +</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        </div>
+                    </div>                   
+                    <div class="tab-pane fade" id="popular" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <div class="row movie-section">
+                        @foreach (var movie in Model.Popular)
+                        {
+                            <div class="col-md-4 movie-section">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="https://image.tmdb.org/t/p/w300/@movie.BackdropPath" class="card-img-top" alt="movie-backdrop">
+                                        <div class="card-body movie-card-body">
+                                        <h5 class="card-title">@movie.Title</h5>
+                                        <p class="card-text">@movie.Overview</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@movie.ReleaseDate.ToString("MM/dd/yyyy")</li>
+                                        <li class="list-group-item">Rating: @movie.VoteAverage</li>
+                                        <li class="list-group-item">Votes: @movie.VoteCount</li>
+                                    </ul>
+                                    <div class="card-body text-light">
+                                            <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})" class="card-link">See More +</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="upcoming" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                        <div class="row">
+                        @foreach (var movie in Model.Upcoming)
+                        {
+                            <div class="col-md-4 movie-section">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="https://image.tmdb.org/t/p/w300/@movie.BackdropPath" class="card-img-top" alt="movie-backdrop">
+                                        <div class="card-body movie-card-body">
+                                        <h5 class="card-title">@movie.Title</h5>
+                                        <p class="card-text">@movie.Overview</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@movie.ReleaseDate.ToString("MM/dd/yyyy")</li>
+                                        <li class="list-group-item">Rating: @movie.VoteAverage</li>
+                                        <li class="list-group-item">Votes: @movie.VoteCount</li>
+                                    </ul>
+                                    <div class="card-body text-light">
+                                            <a href="@Url.Action("MoviesDetails", "Home", new {movie_id = movie.Id})" class="card-link">See More +</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

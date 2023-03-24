@@ -11,7 +11,54 @@ namespace my_entertainment_app.Helpers
         public MovieHelper(IConfiguration config)
         {
             this.config = config;
-        } 
+        }
+
+        public async Task<List<MovieDetails>> GetUpcoming()
+        {
+            List<MovieDetails> movies = new List<MovieDetails>();
+            List<Genre> genreList = new List<Genre>();
+            var apiKey = config["apiKey"];
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/upcoming?api_key={apiKey}&language=en-US&page=1");
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(apiResponse)["results"];
+
+            foreach (var movie in data)
+            {
+                var genres = movie["genre_ids"].ToList();
+                foreach (var item in genres)
+                {
+                    var newGenre = new Genre()
+                    {
+                        Id = Convert.ToInt32(item),
+                        Name = "N/A"
+                    };
+                    genreList.Add(newGenre);
+                }
+
+                var thisMovie = new MovieDetails()
+                {
+                    Id = Convert.ToInt32(movie["id"].ToString()),
+                    Adult = Convert.ToBoolean(movie["adult"]),
+                    BackdropPath = movie["backdrop_path"].ToString(),
+                    OriginalLanguage = movie["original_language"].ToString(),
+                    OriginalTitle = movie["original_title"].ToString(),
+                    Overview = movie["overview"].ToString(),
+                    Popularity = (float)Convert.ToDouble(movie["popularity"].ToString()),
+                    PosterPath = movie["poster_path"].ToString(),
+                    ReleaseDate = Convert.ToDateTime(movie["release_date"]),
+                    Title = movie["title"].ToString(),
+                    VoteAverage = (float)Convert.ToDouble(movie["vote_average"].ToString()),
+                    VoteCount = Convert.ToInt32(movie["vote_count"].ToString()),
+                    Genres = genreList
+                };
+
+                movies.Add(thisMovie);
+            }
+
+            return movies;
+        }
 
         public async Task<List<MovieNowPlaying>> GetNowPlaying()
         {
@@ -45,6 +92,101 @@ namespace my_entertainment_app.Helpers
             }
 
             return movieData;
+        }
+
+        public async Task<List<MovieDetails>> GetTopRated()
+        {
+            List<MovieDetails> movies = new List<MovieDetails>();
+            List<Genre> genreList = new List<Genre>();
+            var apiKey = config["apiKey"];
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/top_rated?api_key={apiKey}&language=en-US&page=1");
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(apiResponse)["results"];
+
+            foreach (var movie in data)
+            {
+                var genres = movie["genre_ids"].ToList();
+                foreach (var item in genres)
+                {
+                    var newGenre = new Genre()
+                    {
+                        Id = Convert.ToInt32(item),
+                        Name = "N/A"
+                    };
+
+                    genreList.Add(newGenre);
+                }
+
+                var thisMovie = new MovieDetails()
+                {
+                    Id = Convert.ToInt32(movie["id"].ToString()),
+                    Adult = Convert.ToBoolean(movie["adult"]),
+                    BackdropPath = movie["backdrop_path"].ToString(),
+                    OriginalLanguage = movie["original_language"].ToString(),
+                    OriginalTitle = movie["original_title"].ToString(),
+                    Overview = movie["overview"].ToString(),
+                    Popularity = (float)Convert.ToDouble(movie["popularity"].ToString()),
+                    PosterPath = movie["poster_path"].ToString(),
+                    ReleaseDate = Convert.ToDateTime(movie["release_date"]),
+                    Title = movie["title"].ToString(),
+                    VoteAverage = (float)Convert.ToDouble(movie["vote_average"].ToString()),
+                    VoteCount = Convert.ToInt32(movie["vote_count"].ToString()),
+                    Genres = genreList
+                };
+
+                movies.Add(thisMovie);
+            }
+
+            return movies;
+        }
+
+        public async Task<List<MovieDetails>> GetPopular()
+        {
+            List<MovieDetails> movies = new List<MovieDetails>();
+            List<Genre> genreList = new List<Genre>();
+            var apiKey = config["apiKey"];
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync($"https://api.themoviedb.org/3/movie/popular?api_key={apiKey}&language=en-US&page=1");
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(apiResponse)["results"];
+
+            foreach (var movie in data)
+            {
+                var genres = movie["genre_ids"].ToList();
+                foreach (var item in genres)
+                {
+                    var newGenre = new Genre()
+                    {
+                        Id = Convert.ToInt32(item),
+                        Name = "N/A"
+                    };
+                    genreList.Add(newGenre);
+                }
+
+                var thisMovie = new MovieDetails()
+                {
+                    Id = Convert.ToInt32(movie["id"].ToString()),
+                    Adult = Convert.ToBoolean(movie["adult"]),
+                    BackdropPath = movie["backdrop_path"].ToString(),
+                    OriginalLanguage = movie["original_language"].ToString(),
+                    OriginalTitle = movie["original_title"].ToString(),
+                    Overview = movie["overview"].ToString(),
+                    Popularity = (float)Convert.ToDouble(movie["popularity"].ToString()),
+                    PosterPath = movie["poster_path"].ToString(),
+                    ReleaseDate = Convert.ToDateTime(movie["release_date"]),
+                    Title = movie["title"].ToString(),
+                    VoteAverage = (float)Convert.ToDouble(movie["vote_average"].ToString()),
+                    VoteCount = Convert.ToInt32(movie["vote_count"].ToString()),
+                    Genres = genreList
+                };
+
+                movies.Add(thisMovie);
+            }
+
+            return movies;
         }
 
         public async Task<MovieDetails> GetMovieDetails(int movie_id)

@@ -78,6 +78,17 @@ body {
     text-align:center;
 }
 
+.movie-section{
+    padding: 20px 20px 20px 20px;
+}
+
+.movie-card {
+}
+
+.movie-card-body{
+    height: 400px;
+}
+
 .footer {
     background-color: darkgrey;
     color: whitesmoke;
